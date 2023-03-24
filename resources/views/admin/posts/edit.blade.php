@@ -25,7 +25,7 @@
         @endif
         <div class="row">
             <div class="col">
-                <form action="{{ route('admin.posts.update', $post->id) }}" method="PUT">
+                <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
                     @csrf
 
                     @method('PUT')

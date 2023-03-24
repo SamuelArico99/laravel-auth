@@ -25,12 +25,11 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this->post);
         return [
             'title' => [
                 'required',
                 Rule::unique('posts')->ignore($this->post),
-                'max=128'
+                'max:128'
 
             ],
             'content' => 'required|max:4096'
