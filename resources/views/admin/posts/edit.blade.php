@@ -25,7 +25,7 @@
         @endif
         <div class="row">
             <div class="col">
-                <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
+                <form action="{{ route('admin.posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     @method('PUT')
@@ -40,7 +40,27 @@
                         <textarea class="form-control" id="content" required maxlength="4096" name="content" rows="3">{{ old('title', $post->title) }}</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Default file input example</label>
+
+                        @if ($post->img)
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" name="delete_img" id="delete_img">
+                            <label class="form-check-label" for="delete_img">
+                              Cancella immagine in evidenza
+                            </label>
+                          </div>
+
+                        <div>
+                            <img src="{{ asset('storage/'.$post->img) }}" style="height: 300px;" alt="" class="mb-3">
+                        </div>
+                    @endif
+
+                        <input class="form-control" type="file" name="img" id="img" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn btn-warning">
                         Aggiorna
                     </button>
                 </form>

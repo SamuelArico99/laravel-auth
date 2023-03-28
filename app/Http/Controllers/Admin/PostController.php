@@ -89,7 +89,23 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+
         $data = $request->validated();
+        if (array_key_exists('delete_img', $data)) {
+            if ($post->img) {
+                Storage::delete($post->img);
+                $post->img = null;
+                $post->save();
+            }
+        } else if (array_key_exists('img', $data)) {
+            $imgPath = Storage::put('posts', $data['img']);
+
+            $data['img'] = $imgPath;
+            if ($post->img) {
+                Storage::delete($post->img);
+            }
+        }
+
         $data['slug'] = Str::slug($data['title']);
 
         $post->update($data);
@@ -105,6 +121,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if ($post->img) {
+            Storage::delete($post->img);
+        }
         $post->delete();
         return redirect()->route('admin.posts.index');
     }
